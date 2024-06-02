@@ -3,9 +3,16 @@
   width: 900px;
   height: 500px;
   display: grid;
-  margin: 0;
+  position: relative;
+}
+.bird {
+  width: 20px;
+  height: 20px;
+  background-color: red;
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+}
+.pipe {
+  width: 60px;
+  position: absolute;
+  background-color: green;
 }
