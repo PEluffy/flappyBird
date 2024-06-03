@@ -3,10 +3,12 @@ const bird = document.createElement("div");
 let birdLeftSpace = 50;
 let birdBottomSpace = 250;
 let isGameOver = false;
-let gridWidth = 900;
+let gridWidth = 800;
 let gridHeight = 500;
 let pipeWidth = 10;
-let pipeGap = 150;
+let pipeVerticalGap = 150;
+let pipeCount = 2;
+let pipes = [];
 
 function createBird() {
   grid.appendChild(bird);
@@ -15,10 +17,10 @@ function createBird() {
   bird.style.bottom = birdBottomSpace + "px";
 }
 class Pipe {
-  constructor() {
-    this.gap = pipeGap;
-    this.left = Math.random() * (gridWidth - pipeWidth);
-    this.topPipeHeight = Math.random() * (gridHeight - pipeGap);
+  constructor(newPipeLeft) {
+    this.gap = pipeVerticalGap;
+    this.left = newPipeLeft;
+    this.topPipeHeight = Math.random() * (gridHeight - pipeVerticalGap);
     this.bottomPipeHeight = gridHeight - this.topPipeHeight - this.gap;
     this.topPipe = document.createElement("div");
     this.bottomPipe = document.createElement("div");
@@ -38,11 +40,30 @@ class Pipe {
     grid.appendChild(visualTwo);
   }
 }
+function createPipes() {
+  for (let i = 0; i < pipeCount; i++) {
+    let pipeHoriGap = gridWidth / pipeCount;
+    let newPipeLeft = 300 + i * pipeHoriGap;
+    let newpipe = new Pipe(newPipeLeft);
+    pipes.push(newpipe);
+  }
+  console.log(pipes);
+}
+function movePipes() {
+  pipes.forEach((pipe) => {
+    pipe.left -= 2;
+    let visualOne = pipe.topPipe;
+    let visualTwo = pipe.bottomPipe;
+    visualOne.style.left = pipe.left + "px";
+    visualTwo.style.left = pipe.left + "px";
+  });
+}
 
 function start() {
   if (!isGameOver) {
     createBird();
-    let pipe = new Pipe();
+    createPipes();
+    setInterval(movePipes, 30);
   }
 }
 
