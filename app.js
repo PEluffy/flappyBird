@@ -9,6 +9,11 @@ let pipeWidth = 10;
 let pipeVerticalGap = 150;
 let pipeCount = 2;
 let pipes = [];
+let gravity = 2;
+let birdFallId;
+let platMoveId;
+let isFalling = false;
+let isJumping = false;
 
 function createBird() {
   grid.appendChild(bird);
@@ -58,12 +63,22 @@ function movePipes() {
     visualTwo.style.left = pipe.left + "px";
   });
 }
+function birdFall() {
+  isFalling = true;
+  isJumping = false;
+  birdFallId = setInterval(() => {
+    isFalling = true;
+    birdBottomSpace -= gravity;
+    bird.style.bottom = birdBottomSpace + "px";
+  }, 30);
+}
 
 function start() {
   if (!isGameOver) {
     createBird();
     createPipes();
-    setInterval(movePipes, 30);
+    platMoveId = setInterval(movePipes, 30);
+    birdFall();
   }
 }
 
