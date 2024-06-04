@@ -54,7 +54,7 @@ function createPipes() {
   }
 }
 function movePipes() {
-  console.log(pipes);
+  // console.log(pipes);
   pipes.forEach((pipe) => {
     pipe.left -= 2;
     let visualOne = pipe.topPipe;
@@ -67,26 +67,60 @@ function movePipes() {
       firstpipeVisualone.classList.remove("pipe");
       firstpipeVisualtwo.classList.remove("pipe");
       pipes.shift();
-      let newPipe = new Pipe(gridWidth);
+      let newPipe = new Pipe(gridWidth - 60);
       pipes.push(newPipe);
     }
   });
+}
+
+function birdJump() {
+  isJumping = true;
+  isFalling = false;
+  birdBottomSpace += 20;
+  bird.style.buttom = birdBottomSpace + "px";
 }
 function birdFall() {
   isFalling = true;
   isJumping = false;
   birdFallId = setInterval(() => {
     isFalling = true;
+    console.log(birdBottomSpace);
+    if (birdTouchesceil() || birdTouchesGround()) {
+      console.log("die");
+      die();
+    }
     birdBottomSpace -= gravity;
     bird.style.bottom = birdBottomSpace + "px";
   }, 30);
 }
+function control(e) {
+  if (!isGameOver) {
+    if (e.key === "ArrowUp") {
+      birdJump();
+    }
+  }
+}
+function birdTouchesGround() {
+  if (birdBottomSpace === 0) {
+    return true;
+  }
+}
+function birdTouchesceil() {
+  if (birdBottomSpace === gridHeight - 20) {
+    return true;
+  }
+}
 
+function die() {
+  clearInterval(birdFallId);
+  clearInterval(platMoveId);
+}
 function start() {
   if (!isGameOver) {
     createBird();
     createPipes();
     platMoveId = setInterval(movePipes, 30);
+    document.addEventListener("keyup", control);
     birdFall();
   }
 }
