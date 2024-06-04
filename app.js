@@ -52,15 +52,24 @@ function createPipes() {
     let newpipe = new Pipe(newPipeLeft);
     pipes.push(newpipe);
   }
-  console.log(pipes);
 }
 function movePipes() {
+  console.log(pipes);
   pipes.forEach((pipe) => {
     pipe.left -= 2;
     let visualOne = pipe.topPipe;
     let visualTwo = pipe.bottomPipe;
     visualOne.style.left = pipe.left + "px";
     visualTwo.style.left = pipe.left + "px";
+    if (pipe.left <= 0) {
+      let firstpipeVisualone = pipes[0].topPipe;
+      let firstpipeVisualtwo = pipes[0].bottomPipe;
+      firstpipeVisualone.classList.remove("pipe");
+      firstpipeVisualtwo.classList.remove("pipe");
+      pipes.shift();
+      let newPipe = new Pipe(gridWidth);
+      pipes.push(newPipe);
+    }
   });
 }
 function birdFall() {
