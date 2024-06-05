@@ -1,6 +1,6 @@
 const grid = document.querySelector(".grid");
 const bird = document.createElement("div");
-let birdLeftSpace = 50;
+let birdLeftSpace = 100;
 let birdBottomSpace = 250;
 let isGameOver = false;
 let gridWidth = 800;
@@ -9,7 +9,7 @@ let pipeWidth = 10;
 let pipeVerticalGap = 150;
 let pipeCount = 2;
 let pipes = [];
-let gravity = 2;
+let gravity = 3;
 let birdFallId;
 let platMoveId;
 let isFalling = false;
@@ -76,7 +76,7 @@ function movePipes() {
 function birdJump() {
   isJumping = true;
   isFalling = false;
-  birdBottomSpace += 20;
+  birdBottomSpace += 30;
   bird.style.buttom = birdBottomSpace + "px";
 }
 function birdFall() {
@@ -85,8 +85,15 @@ function birdFall() {
   birdFallId = setInterval(() => {
     isFalling = true;
     console.log(birdBottomSpace);
-    if (birdTouchesceil() || birdTouchesGround()) {
-      console.log("die");
+    console.log(birdLeftSpace);
+    if (birdTouchesceil()) {
+      console.log("touches ceil");
+      die();
+    } else if (birdTouchesGround()) {
+      console.log("touches ground");
+      die();
+    } else if (birdTouchesPipe()) {
+      console.log("touches pipe");
       die();
     }
     birdBottomSpace -= gravity;
@@ -101,12 +108,33 @@ function control(e) {
   }
 }
 function birdTouchesGround() {
-  if (birdBottomSpace === 0) {
+  if (birdBottomSpace <= 0) {
     return true;
   }
 }
 function birdTouchesceil() {
-  if (birdBottomSpace === gridHeight - 20) {
+  if (birdBottomSpace >= gridHeight - 20) {
+    return true;
+  }
+}
+function birdTouchesPipe() {
+  console.log(
+    "pipes 0",
+    pipes[0].topPipeHeight,
+    "pipes 1",
+    pipes[0].bottomPipeHeight,
+    " gridWidth - pipes[0].topPipeHeight",
+    gridWidth - pipes[0].topPipeHeight,
+    "bird bottom space",
+    birdBottomSpace
+  );
+  if (
+    birdLeftSpace + 20 >= pipes[0].left &&
+    birdLeftSpace <= pipes[0].left + pipeWidth &&
+    (birdBottomSpace <= pipes[0].bottomPipeHeight ||
+      birdBottomSpace + 20 >= pipes[0].topPipeHeight)
+  ) {
+    //and add buttom space that will say if this is pipe or gap
     return true;
   }
 }
