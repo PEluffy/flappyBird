@@ -76,8 +76,8 @@ function movePipes() {
 function birdJump() {
   isJumping = true;
   isFalling = false;
-  birdBottomSpace += 30;
-  bird.style.buttom = birdBottomSpace + "px";
+  birdBottomSpace += 50;
+  bird.style.bottom = birdBottomSpace + "px";
 }
 function birdFall() {
   isFalling = true;
@@ -108,35 +108,19 @@ function control(e) {
   }
 }
 function birdTouchesGround() {
-  if (birdBottomSpace <= 0) {
-    return true;
-  }
+  return birdBottomSpace <= 0;
 }
 function birdTouchesceil() {
-  if (birdBottomSpace >= gridHeight - 20) {
-    return true;
-  }
+  return birdBottomSpace >= gridHeight - 20;
 }
 function birdTouchesPipe() {
-  console.log(
-    "pipes 0",
-    pipes[0].topPipeHeight,
-    "pipes 1",
-    pipes[0].bottomPipeHeight,
-    " gridWidth - pipes[0].topPipeHeight",
-    gridWidth - pipes[0].topPipeHeight,
-    "bird bottom space",
-    birdBottomSpace
+  return pipes.some(
+    (pipe) =>
+      birdLeftSpace + 20 >= pipe.left &&
+      birdLeftSpace <= pipe.left + pipeWidth &&
+      (birdBottomSpace <= pipe.bottomPipeHeight ||
+        birdBottomSpace + 20 >= gridHeight - pipe.topPipeHeight)
   );
-  if (
-    birdLeftSpace + 20 >= pipes[0].left &&
-    birdLeftSpace <= pipes[0].left + pipeWidth &&
-    (birdBottomSpace <= pipes[0].bottomPipeHeight ||
-      birdBottomSpace + 20 >= pipes[0].topPipeHeight)
-  ) {
-    //and add buttom space that will say if this is pipe or gap
-    return true;
-  }
 }
 
 function die() {
