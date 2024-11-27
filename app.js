@@ -101,10 +101,9 @@ function birdFall() {
   }, 30);
 }
 function control(e) {
-  if (!isGameOver) {
-    if (e.key === "ArrowUp") {
-      birdJump();
-    }
+  if (isGameOver) return;
+  if (e.key === "ArrowUp") {
+    birdJump();
   }
 }
 function birdTouchesGround() {
@@ -125,9 +124,9 @@ function birdTouchesPipe() {
 
 function die() {
   clearInterval(birdFallId);
+  clearInterval(platMoveId);
   isGameOver = true;
   document.removeEventListener("keyup", control);
-  clearInterval(platMoveId);
 }
 function start() {
   if (!isGameOver) {
