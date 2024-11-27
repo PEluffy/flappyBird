@@ -125,6 +125,8 @@ function birdTouchesPipe() {
 
 function die() {
   clearInterval(birdFallId);
+  isGameOver = true;
+  document.removeEventListener("keyup", control);
   clearInterval(platMoveId);
 }
 function start() {
